@@ -26,7 +26,7 @@ The project is built on PostgreSQL with Python scripts for data import and analy
 
     ```python3 -m venv venv
     source venv/bin/activate
-    pip install -r requirements.txt
+    pip install psycopg2 pandas
 
 
 3. **Create database schema**:

@@ -1,0 +1,12 @@
+Id,UserName,FullName,Email,Password,LocationId,Bio,RegistrationDate
+6,newuser,"New User",newuser@gmail.com,AQAAAAIAAYagAAAAEMWwMqqz7D3wBOnxjrWMi2Nu7JOXWzGsAUXGoUMm7q5UqBb36SC2e6C/wjNUEWmFrQ==,7,"test bio test test test","2023-12-24 05:29:20.605207"
+7,newuser1,"New User 1",newuser1@gmail.com,AQAAAAIAAYagAAAAEBONFboBjREg5tXk/S/yb0l82e30w/MGSUAMtjVbDF70xAYVweNyj0Ni79zuLMGmUQ==,7,NULL,"2024-01-12 02:56:57.437370"
+8,newuser2,"New User 2",newuser2@gmail.com,AQAAAAIAAYagAAAAEN2bXi8ho+2tSjhZ3pCSeIvhsgQwwWH9tlTWA4ZXB60ErpXq1V/Q3gkVyob8wDawwA==,8,NULL,"2024-01-12 05:00:25.680600"
+9,newuser3,"New User 3",newuser3@gmail.com,AQAAAAIAAYagAAAAENY6FrPkyA4ZyftbEd3XODIdzrtZL28cGeaBMohCFbyLOq48R1eXxRrfJDzXQu7JAg==,9,NULL,"2024-01-12 05:01:06.052957"
+10,newuser4,"new user 4",newuser4@gmail.com,AQAAAAIAAYagAAAAEEj0a1CdLsNt6PjVyqMwl2ajuOnsNfX6cOpFH46pzKC80ymczfLygkYrjGwwfDZ12g==,10,NULL,"2024-01-12 05:01:35.252665"
+13,anfan,"antoni fantonio",anfan@gmail.com,AQAAAAIAAYagAAAAEDzCK0/NLaC3B2SZRD3exxnI41X8I/7SoOeBfrkjsRVgHq2GKWp2bHxJhr636p6LTg==,6,NULL,"2024-02-29 16:59:41.034639"
+14,jupala,"Juan Palamo",jupalahopala@gmail.com,AQAAAAIAAYagAAAAEGt6FOwthm1Vc7D7nFhA/WGoCs2XU0xXcPLkjW+/g3X/WhfNqK9yrW8arjtQgfikug==,6,NULL,"2024-01-30 17:38:02.049286"
+15,jplo,"Juan Puablo",jplo@gmail.com,AQAAAAIAAYagAAAAEKuUgg4K6zbXZ+09fekAaun+QdkCByJrAHPeyGRIsdmF5eV8rI1T12gk2hy7Op7QGA==,6,NULL,"2024-01-31 15:30:24.138863"
+16,apablo,"Antonio Pablo",apablo@gmail.com,AQAAAAIAAYagAAAAENX3xuqnwsxtyhnPXYju9iYCYfCEFp3OVFuWIv9L3Dpc7Ilix/2im5xo1u70oObfuw==,6,"I am a berliner.","2024-01-31 15:48:48.053276"
+17,juho,"Juan Hose",juho@gmail.com,AQAAAAIAAYagAAAAEAlSAPpa7CGwYJvZ7J53Gnrw3/OMkOihw5fId/170xd3Q6HFCCP3iTrOHUDbVCkUFw==,6,NULL,"2024-01-31 15:56:43.898883"
+18,efi,"efi fefamins tea",efi@gmail.com,AQAAAAIAAYagAAAAEH/0BwPtDLTxXXeuWGqVE7NLmUgHIpTAP1ZEgoqvS51jktB8uZVQeriLz2TKuPMKDw==,6,NULL,"2024-02-08 20:59:25.986992"

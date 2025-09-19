@@ -1,6 +1,4 @@
 # 📊Techno-Analytics
-=======
-# Techno Analytics
 
 ## 🏙️Company
 **Techno Analytics** – This dataset is part of a research project aimed at developing a hybrid recommendation system for techno music events. The database stores user preferences, event details, artist metadata, and recommendation interactions, making it a valuable dataset for music recommendation research, user preference modeling, and event-based recommendation systems.
@@ -33,11 +31,13 @@ The project is built on PostgreSQL with Python scripts for data import and analy
 
 3. **Create database schema**:
 
-    ```python3 setup_db.py
+    ```bash
+    python3 setup_db.py
 
 4. **Import data from CSV files**:
 
-    ```python3 import_data.py
+    ```bash
+    python3 import_data.py
 
 
 5. **Run SQL queries**:
@@ -70,4 +70,4 @@ Techno-Analytics/
 │   │── main.py
 │   │── archive/ (CSV dataset from Kaggle)
 │   │── venv/ (virtual environment - excluded from git)
-b1c8d97 (Initial commit: setup_db, import_data, queries, README)
+

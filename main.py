@@ -15,31 +15,31 @@ cur.execute("Select name from artists Where name Like '%o';")
 print(cur.fetchall())
 
 
-# queries = [
-#     """
-#     Select a.username, b.name As favourite_artist
-#     From favoriteartists fa 
-#     Join users a On fa.userid=a.id
-#     Join artists b On fa.artistid=b.id;
+queries = [
+    """
+    Select a.username, b.name As favourite_artist
+    From favoriteartists fa 
+    Join users a On fa.userid=a.id
+    Join artists b On fa.artistid=b.id;
 
 
 
-#     SELECT e.name AS event_name, l.name AS location_name
-#     FROM events e
-#     INNER JOIN locations l ON e.locationid = l.id;
-#     """
-# ]
+    SELECT e.name AS event_name, l.name AS location_name
+    FROM events e
+    INNER JOIN locations l ON e.locationid = l.id;
+    """
+]
 
-# for q in queries:
+for q in queries:
     
-#     cur.execute(q)
-#     try:
-#         rows = cur.fetchall()
-#         for row in rows:
-#             print(row)
-#     except:
-#         print("No results to fetch.")
-#     print("-" * 50)
+    cur.execute(q)
+    try:
+        rows = cur.fetchall()
+        for row in rows:
+            print(row)
+    except:
+        print("No results to fetch.")
+    print("-" * 50)
 
 
     

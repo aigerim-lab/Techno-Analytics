@@ -11,29 +11,38 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 
-queries = [
-    "SELECT * FROM artists LIMIT 5;",
-    "SELECT genreid, COUNT(*) FROM artists GROUP BY genreid;",
-    """
-    SELECT e.name AS event_name, AVG(eh.rate) AS avg_rating
-    FROM eventhistory eh
-    JOIN events e ON eh.eventid = e.id
-    GROUP BY e.name
-    ORDER BY avg_rating DESC
-    LIMIT 5;
-    """
-]
+cur.execute("Select name from artists Where name Like '%o';")
+print(cur.fetchall())
 
-for q in queries:
-    print(f"▶ Running query:\n{q.strip()}")
-    cur.execute(q)
-    try:
-        rows = cur.fetchall()
-        for row in rows:
-            print(row)
-    except:
-        print("No results to fetch.")
-    print("-" * 50)
+
+# queries = [
+#     """
+#     Select a.username, b.name As favourite_artist
+#     From favoriteartists fa 
+#     Join users a On fa.userid=a.id
+#     Join artists b On fa.artistid=b.id;
+
+
+
+#     SELECT e.name AS event_name, l.name AS location_name
+#     FROM events e
+#     INNER JOIN locations l ON e.locationid = l.id;
+#     """
+# ]
+
+# for q in queries:
+    
+#     cur.execute(q)
+#     try:
+#         rows = cur.fetchall()
+#         for row in rows:
+#             print(row)
+#     except:
+#         print("No results to fetch.")
+#     print("-" * 50)
+
+
+    
 
 cur.close()
 conn.close()

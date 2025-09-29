@@ -71,3 +71,5 @@ Techno-Analytics/
 │   │── archive/ (CSV dataset from Kaggle)
 │   │── venv/ (virtual environment - excluded from git)
 
+
+![ER Diagram](screenshots/ER_diagram_v2.png) 

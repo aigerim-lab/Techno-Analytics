@@ -1,4 +1,3 @@
-# analytics.py
 import os
 from pathlib import Path
 import pandas as pd
@@ -8,7 +7,6 @@ import plotly.express as px
 from openpyxl import load_workbook
 from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.utils import get_column_letter
-
 from config import DB_URI
 
 BASE = Path(__file__).resolve().parent
@@ -24,10 +22,8 @@ def engine():
     return create_engine(DB_URI)
 
 def load_queries(sql_path: Path) -> dict:
-    """
-    Читает файл SQL и собирает запросы по маркерам `-- name: <id>`.
-    Если маркера нет — сгенерирует имя q01, q02, ...
-    """
+    """Читает файл SQL и собирает запросы по маркерам -- name: <id>.
+       Если маркера нет — сгенерирует имя q01, q02, ..."""
     text = sql_path.read_text(encoding="utf-8")
     blocks = [b.strip() for b in text.split(";") if b.strip()]
     queries = {}
@@ -37,8 +33,7 @@ def load_queries(sql_path: Path) -> dict:
         qname = None
         body = []
         for ln in lines:
-            low = ln.lower().strip()
-            if low.startswith("-- name:"):
+            if ln.lower().startswith("-- name:"):
                 qname = ln.split(":", 1)[1].strip()
             else:
                 body.append(ln)
@@ -100,13 +95,10 @@ def export_to_excel(dfs: dict, filename: Path):
     # форматирование
     wb = load_workbook(filename)
     for sheet in wb.worksheets:
-        # закрепить заголовок
         sheet.freeze_panes = "A2"
-        # фильтры
         sheet.auto_filter.ref = sheet.dimensions
-        # градиент по числовым столбцам
-        from pandas.api.types import is_numeric_dtype
         df = dfs[sheet.title]
+        from pandas.api.types import is_numeric_dtype
         for idx, col in enumerate(df.columns, start=1):
             if is_numeric_dtype(df[col]):
                 col_letter = get_column_letter(idx)
@@ -122,46 +114,30 @@ def export_to_excel(dfs: dict, filename: Path):
     total_rows = sum(len(v) for v in dfs.values())
     print(f"[OK] Created {filename.name}, {len(dfs)} sheets, {total_rows} rows")
 
-def time_slider_example(e):
-    # события по месяцам и жанрам (для Plotly слайдера)
-    sql = """
-    SELECT DATE_TRUNC('month', e.date) AS month, g.name AS genre, COUNT(*) AS cnt
-    FROM events e
-    JOIN genres g ON e.genreid = g.id
-    GROUP BY month, g.name
-    ORDER BY month, g.name;
-    """
-    df = pd.read_sql(sql, e)
-    df["month_str"] = pd.to_datetime(df["month"]).dt.strftime("%Y-%m")
-    fig = px.bar(df, x="genre", y="cnt",
-                 animation_frame="month_str", range_y=[0, df["cnt"].max()*1.2],
-                 title="Events by Genre over Time")
-    fig.show()
-
 def main():
     ensure_dirs()
     e = engine()
     queries = load_queries(SQL_FILE)
 
-    # 6 ОБЯЗАТЕЛЬНЫХ ТИПОВ ЧАРТОВ — привязка к твоим именам запросов:
+    # 6 графиков
     plan = [
-        # (query_name, chart_type, kwargs..., outfile, title)
         ("q1_users_by_country", "pie",  dict(labels_col="country", values_col="user_count"),
          "01_pie_users_by_country.png", "Users by Country"),
         ("q2_events_by_genre", "bar",   dict(x="genre", y="event_count"),
          "02_bar_events_by_genre.png", "Events by Genre"),
         ("q3_top_artists_by_events", "barh", dict(y="artist", x="event_count"),
-         "03_barh_top_artists.png", "Top Artists by #Events"),
+         "03_barh_top_artists.png", "Top Artists by Events"),
         ("q4_events_by_month", "line", dict(x="month", y="event_count"),
          "04_line_events_by_month.png", "Events per Month"),
-        ("q5_user_age", "hist",        dict(col="user_age", bins=10),
+        ("q5_user_age", "hist", dict(col="user_age", bins=10),
          "05_hist_user_age.png", "User Age Distribution"),
         ("q6_rating_vs_attendance", "scatter", dict(x="attended_events", y="avg_rating"),
          "06_scatter_rating_vs_attendance.png", "Avg Rating vs Attended Events"),
     ]
 
-    # Выполняем и рисуем
     dfs_for_excel = {}
+
+    # строим 6 графиков
     for qname, ctype, params, outfile, title in plan:
         if qname not in queries:
             print(f"[WARN] {qname} not found in SQL file — skip")
@@ -169,7 +145,6 @@ def main():
         df = pd.read_sql(queries[qname], e)
         dfs_for_excel[qname] = df.copy()
 
-        # рисуем по типу
         if ctype == "pie":
             pie_chart(df, fname=outfile, title=title, **params)
         elif ctype == "bar":
@@ -177,7 +152,6 @@ def main():
         elif ctype == "barh":
             barh_chart(df, fname=outfile, title=title, **params)
         elif ctype == "line":
-            # для дат — преобразуем к datetime для красивой оси
             if "month" in df.columns:
                 df["month"] = pd.to_datetime(df["month"])
             line_chart(df, fname=outfile, title=title, **params)
@@ -186,12 +160,16 @@ def main():
         elif ctype == "scatter":
             scatter_chart(df, fname=outfile, title=title, **params)
 
-    # Экспорт в Excel со всеми таблицами, что использовали на графиках
-    export_to_excel(dfs_for_excel, filename=Path("report_assignment2.xlsx"))
+    
+    for qname, sql in queries.items():
+        try:
+            df = pd.read_sql(sql, e)
+            dfs_for_excel[qname] = df
+            print(f"[Excel] Sheet {qname}: {len(df)} rows")
+        except Exception as ex:
+            print(f"[ERROR] query {qname}: {ex}")
 
-    # Интерактивный пример слайдера времени (показывается в отдельном окне)
-    # Раскомментируй на защите:
-    # time_slider_example(e)
+    export_to_excel(dfs_for_excel, filename=Path("report_assignment2.xlsx"))
 
 if __name__ == "__main__":
     main()

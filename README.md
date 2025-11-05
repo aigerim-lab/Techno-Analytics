@@ -4,72 +4,76 @@
 **Techno Analytics** – This dataset is part of a research project aimed at developing a hybrid recommendation system for techno music events. The database stores user preferences, event details, artist metadata, and recommendation interactions, making it a valuable dataset for music recommendation research, user preference modeling, and event-based recommendation systems.
 ---
 
-## 📌Project Overview
-This project uses a dataset of techno events, artists, and user interactions to:  
-- Track events by location and country.  
-- Analyze user preferences for artists and genres.  
-- Evaluate event attendance and ratings.  
-- Provide recommendations based on favorite artists and genres.  
+## 🎯 Overview
+This project demonstrates full monitoring setup using **Prometheus**, **Grafana**, and **Exporters** for:
+- PostgreSQL database performance (Database Dashboard)
+- System-level metrics (Node Dashboard)
 
-The project is built on PostgreSQL with Python scripts for data import and analysis, and includes SQL queries for generating insights.
+The dashboards visualize **real-time metrics**, **PromQL queries**, and include **alerts**, **global filters**, and **API verification**.
 
 ---
 
-## Step-by-Step Instructions
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/Techno-Analytics.git
-   cd Techno-Analytics/db
-
-2. **Set up a virtual environment**:
-
-    ```python3 -m venv venv
-    source venv/bin/activate
-    pip install psycopg2 pandas
-
-
-3. **Create database schema**:
-
-    ```bash
-    python3 setup_db.py
-
-4. **Import data from CSV files**:
-
-    ```bash
-    python3 import_data.py
+## 🧩 Project Structure
+Assignment4/
+│
+├── docker-compose.yml
+├── config/
+│ └── prometheus.yml
+├── postgres_exporter/
+│ └── ...
+├── node_exporter/
+│ └── ...
+├── dashboards/
+│ ├── Database_Dashboard.json
+│ └── Node_Dashboard.json
+├── prometheus_api_test.py
+└── README.md
 
 
-5. **Run SQL queries**:
+---
 
-    ```Open queries.sql in pgAdmin and execute queries directly.
-    Or run with Python:
-    python3 main.py
+## ⚙️ Setup Instructions
 
-6. **Tools & Resources**:
+### 1️⃣ Prerequisites
+- Docker & Docker Compose
+- PostgreSQL database (your dataset)
+- Python 3.8+
 
-    ```PostgreSQL – relational database system
+---
 
-    pgAdmin – GUI for managing PostgreSQL
+### 2️⃣ Run Prometheus + Exporters + Grafana
+Create files as below and run:
 
-    Python (pandas, psycopg2) – for data import and query execution
+```bash
+docker-compose up -d
+- Prometheus → http://localhost:9090
+- Grafana → http://localhost:3000
 
-    GitHub – project repository and version control
+3️⃣ prometheus.yml
 
-    dbdiagram.io – ER diagram visualization
+Example configuration:
 
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
 
-7. **Repository Structure**:
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
 
-Techno-Analytics/
-│── README.md
-│── queries.sql
-│── db/
-│   │── setup_db.py
-│   │── import_data.py
-│   │── main.py
-│   │── archive/ (CSV dataset from Kaggle)
-│   │── venv/ (virtual environment - excluded from git)
+  - job_name: 'postgresql'
+    static_configs:
+      - targets: ['postgres_exporter:9187']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'my_postgresql_db'
 
-
-![ER Diagram](screenshots/ER_diagram_v2.png) 
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node_exporter:9100']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'my_local_node'

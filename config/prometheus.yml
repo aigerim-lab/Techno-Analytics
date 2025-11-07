@@ -5,10 +5,24 @@ global:
     monitor: 'student-monitoring'
 
 scrape_configs:
-  # Сам Prometheus
+  # Prometheus
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
+
+  # Node Exporter
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node_exporter:9100']
+        labels:
+          instance: 'MacBook_Aygerim'
+      - targets: ['node_exporter:9100']
+        labels:
+          instance: 'Virtual_Node_1'
+      - targets: ['node_exporter:9100']
+        labels:
+          instance: 'Virtual_Node_2'
+
 
   # PostgreSQL Exporter
   - job_name: 'postgresql'
@@ -19,12 +33,9 @@ scrape_configs:
         target_label: instance
         replacement: 'my_postgresql_db'
 
-  # Node Exporter
-  - job_name: 'node'
-    static_configs:
-      - targets: ['node_exporter:9100']
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
-        replacement: 'my_local_node'
 
+
+  # Custom Exporter
+  - job_name: 'custom_exporter'
+    static_configs:
+      - targets: ['host.docker.internal:8000']

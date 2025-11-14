@@ -2,3 +2,12 @@ venv/
 __pycache__/
 *.pyc
 .DS_Store
+venv/
+venv311/
+__pycache__/
+*.so
+.DS_Store
+*.db
+*.zip
+*.tar
+*.rar
